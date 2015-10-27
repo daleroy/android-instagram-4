@@ -83,7 +83,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
 
     private SpannableStringBuilder getFormattedCaption(String userName, String caption) {
         ForegroundColorSpan fgcsBlue = new ForegroundColorSpan(
-                this.context.getResources().getColor(android.R.color.holo_red_dark)//blue_text)
+                this.context.getResources().getColor(R.color.blue_text)
         );
 
         SpannableStringBuilder ssb = new SpannableStringBuilder(userName);
@@ -101,7 +101,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
             ssb.append(" ");
 
             ForegroundColorSpan fgcsGray = new ForegroundColorSpan(
-                    this.context.getResources().getColor(android.R.color.holo_blue_dark)//gray_text)
+                    this.context.getResources().getColor(R.color.gray_text)
             );
 
             ssb.append(caption);

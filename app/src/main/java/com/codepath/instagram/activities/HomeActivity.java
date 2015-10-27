@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import com.codepath.instagram.R;
 import com.codepath.instagram.adapters.InstagramPostsAdapter;
 import com.codepath.instagram.models.InstagramPost;
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 import org.json.JSONException;
 
@@ -24,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         List<InstagramPost> postList = new ArrayList<InstagramPost>();
+        Fresco.initialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         try {

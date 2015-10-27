@@ -3,7 +3,10 @@ package com.codepath.instagram.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.format.DateUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +16,24 @@ import com.codepath.instagram.R;
 import com.codepath.instagram.models.InstagramPost;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by dleroy on 10/26/15.
  */
 public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAdapter.InstagramPostViewHolder> {
     private List<InstagramPost> postList;
+    private Context context;
 
     public InstagramPostsAdapter(List<InstagramPost> postList) { this.postList = postList; }
 
 
     @Override
     public InstagramPostsAdapter.InstagramPostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+        this.context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(this.context);
 
         View itemView = inflater.inflate(R.layout.layout_item_post, parent, false);
 
@@ -41,14 +47,15 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         Uri profileImageUri = Uri.parse(post.user.profilePictureUrl);
         Uri postImageUri = Uri.parse(post.image.imageUrl);
         String formatedDate = (String) DateUtils.getRelativeTimeSpanString(post.createdTime *1000);
+        SpannableStringBuilder caption = getFormattedCaption(post.user.userName, post.caption);
+        String likesCount = getFormattedLikesCount(post.likesCount);
 
         holder.tvUserName.setText(post.user.userName);
         holder.sdvUserProfileImage.setImageURI(profileImageUri);
         holder.tvPostDate.setText(formatedDate);
         holder.sdvPostImage.setImageURI(postImageUri);
-        holder.tvUserNameLower.setText(post.user.userName);
-        holder.tvLikeCount.setText(post.getFormattedLikesCount(post.likesCount));
-        holder.tvCaption.setText(post.caption);
+        holder.tvLikeCount.setText(likesCount);
+        holder.tvCaption.setText(caption);
 
     }
 
@@ -60,7 +67,6 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         public SimpleDraweeView sdvPostImage;
         public TextView tvUserName;
         public TextView tvPostDate;
-        public TextView tvUserNameLower;
         public TextView tvLikeCount;
         public TextView tvCaption;
 
@@ -70,9 +76,47 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
             sdvPostImage = (SimpleDraweeView) layoutView.findViewById(R.id.sdvPostImage);
             tvUserName = (TextView) layoutView.findViewById(R.id.tvUserName);
             tvPostDate = (TextView) layoutView.findViewById(R.id.tvPostDate);
-            tvUserNameLower = (TextView) layoutView.findViewById(R.id.tvUserNameLower);
             tvLikeCount = (TextView) layoutView.findViewById(R.id.tvLikeCount);
             tvCaption = (TextView) layoutView.findViewById(R.id.tvCaption);
         }
+    }
+
+    private SpannableStringBuilder getFormattedCaption(String userName, String caption) {
+        ForegroundColorSpan fgcsBlue = new ForegroundColorSpan(
+                this.context.getResources().getColor(android.R.color.holo_red_dark)//blue_text)
+        );
+
+        SpannableStringBuilder ssb = new SpannableStringBuilder(userName);
+
+        ssb.setSpan(
+                fgcsBlue,
+                0,
+                ssb.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        if (caption != null) {
+
+
+            ssb.append(" ");
+
+            ForegroundColorSpan fgcsGray = new ForegroundColorSpan(
+                    this.context.getResources().getColor(android.R.color.holo_blue_dark)//gray_text)
+            );
+
+            ssb.append(caption);
+            ssb.setSpan(
+                    fgcsGray,
+                    ssb.length() - caption.length(),
+                    ssb.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+        return ssb;
+    }
+
+    public static String getFormattedLikesCount(int count) {
+        return NumberFormat.getNumberInstance(Locale.US).format(count) + " likes";
     }
 }

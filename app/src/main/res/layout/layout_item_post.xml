@@ -21,7 +21,9 @@
         android:layout_alignBottom="@+id/sdvUserProfileImage"
         android:layout_toRightOf="@+id/sdvUserProfileImage"
         android:layout_toEndOf="@+id/sdvUserProfileImage"
-        android:paddingLeft="8dp" />
+        android:paddingLeft="8dp"
+        android:gravity="center_horizontal"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +36,9 @@
         android:fontFamily="san-serif"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/sdvPostImage"
+        android:enabled="true" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvPostImage"
@@ -61,20 +65,8 @@
         android:textColor="@color/blue_text"
         android:textSize="14sp"
         android:enabled="true"
-        android:drawablePadding="5dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/tvUserNameLower"
-        android:layout_below="@+id/tvLikeCount"
-        android:fontFamily="san-serif-medium"
-        android:textColor="@color/blue_text"
-        android:textSize="14sp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:drawablePadding="5dp"
+        android:gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -83,13 +75,11 @@
         android:text="Medium Text"
         android:id="@+id/tvCaption"
         android:fontFamily="san-serif-medium"
-        android:textColor="@color/gray_text"
         android:textSize="14sp"
-        android:layout_below="@+id/tvLikeCount"
-        android:layout_toRightOf="@+id/tvLikeCount"
-        android:layout_toEndOf="@+id/tvLikeCount"
         android:singleLine="false"
         android:lineSpacingMultiplier="1.2"
-        android:visibility="invisible" />
+        android:layout_below="@+id/tvLikeCount"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

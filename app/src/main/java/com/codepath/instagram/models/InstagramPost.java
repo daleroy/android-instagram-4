@@ -10,10 +10,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class InstagramPost implements Serializable {
     public String mediaId;
@@ -96,10 +94,6 @@ public class InstagramPost implements Serializable {
         JSONObject popularJSON = Utils.loadJsonFromAsset(context, "popular.json");
 
         return Utils.decodePostsFromJsonResponse(popularJSON);
-    }
-
-    public static String getFormattedLikesCount(int count) {
-        return NumberFormat.getNumberInstance(Locale.US).format(count) + " likes";
     }
 
 }

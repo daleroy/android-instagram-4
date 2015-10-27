@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.adapters.InstagramPostsAdapter;
+import com.codepath.instagram.helpers.SimpleVerticalSpacerItemDecoration;
 import com.codepath.instagram.models.InstagramPost;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -35,10 +36,10 @@ public class HomeActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        SimpleVerticalSpacerItemDecoration svsid = new SimpleVerticalSpacerItemDecoration(52);
         // Get RecyclerView Reference
         RecyclerView rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
-
+        //rvPosts.addItemDecoration(svsid);
         // Create Adapter
         InstagramPostsAdapter adapter = new InstagramPostsAdapter(postList);
 

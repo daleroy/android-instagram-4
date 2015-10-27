@@ -47,8 +47,9 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         holder.tvPostDate.setText(formatedDate);
         holder.sdvPostImage.setImageURI(postImageUri);
         holder.tvUserNameLower.setText(post.user.userName);
-        holder.tvLikeCount.setText(Integer.toString(post.likesCount));
+        holder.tvLikeCount.setText(post.getFormattedLikesCount(post.likesCount));
         holder.tvCaption.setText(post.caption);
+
     }
 
     @Override

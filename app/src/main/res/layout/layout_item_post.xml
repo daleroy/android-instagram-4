@@ -7,7 +7,11 @@
         android:id="@+id/sdvUserProfileImage"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        fresco:placeholderImage="@drawable/gray_oval" />
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="6dp"
+        fresco:placeholderImage="@drawable/gray_oval"
+        fresco:roundAsCircle="true"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,16 +22,17 @@
         android:fontFamily="san-serif-medium"
         android:textColor="@color/blue_text"
         android:textSize="14sp"
-        android:layout_alignBottom="@+id/sdvUserProfileImage"
         android:layout_toRightOf="@+id/sdvUserProfileImage"
         android:layout_toEndOf="@+id/sdvUserProfileImage"
-        android:paddingLeft="8dp"
-        android:gravity="center_horizontal"
-        android:layout_alignParentTop="true" />
+        android:layout_marginLeft="8dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/sdvPostImage" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="14dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tvPostDate"
@@ -38,22 +43,27 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_above="@+id/sdvPostImage"
-        android:enabled="true" />
+        android:enabled="true"
+        android:gravity="center_vertical" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/sdvPostImage"
         android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_height="300dp"
         fresco:placeholderImage="@drawable/gray_rectangle"
-        android:layout_alignRight="@+id/tvPostDate"
-        android:layout_alignEnd="@+id/tvPostDate"
+        fresco:viewAspectRatio="1.0"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/sdvUserProfileImage" />
+        android:layout_below="@+id/sdvUserProfileImage"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tvLikeCount"
@@ -71,6 +81,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tvCaption"
@@ -80,6 +92,7 @@
         android:lineSpacingMultiplier="1.2"
         android:layout_below="@+id/tvLikeCount"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="24dp" />
 
 </RelativeLayout>

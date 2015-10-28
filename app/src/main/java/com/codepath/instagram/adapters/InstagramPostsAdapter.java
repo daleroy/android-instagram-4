@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.helpers.DeviceDimensionsHelper;
 import com.codepath.instagram.models.InstagramPost;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -44,6 +45,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     @Override
     public void onBindViewHolder(InstagramPostsAdapter.InstagramPostViewHolder holder, int position) {
         InstagramPost post = postList.get(position);
+        int displayWidth = DeviceDimensionsHelper.getDisplayWidth(this.context);
+        int displayHeight = DeviceDimensionsHelper.getDisplayHeight(this.context);
         Uri profileImageUri = Uri.parse(post.user.profilePictureUrl);
         Uri postImageUri = Uri.parse(post.image.imageUrl);
         String formatedDate = (String) DateUtils.getRelativeTimeSpanString(post.createdTime *1000);
@@ -54,6 +57,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         holder.sdvUserProfileImage.setImageURI(profileImageUri);
         holder.tvPostDate.setText(formatedDate);
         holder.sdvPostImage.setImageURI(postImageUri);
+        holder.sdvPostImage.setAspectRatio(1.0f);
+        holder.sdvPostImage.setMinimumHeight(displayWidth);
         holder.tvLikeCount.setText(likesCount);
         holder.tvCaption.setText(caption);
 

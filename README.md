@@ -16,3 +16,4 @@ Completed user stories:
 ![Video Walkthrough](instagram.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
+

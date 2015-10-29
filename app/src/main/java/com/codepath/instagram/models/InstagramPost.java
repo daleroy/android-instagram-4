@@ -1,14 +1,9 @@
 package com.codepath.instagram.models;
 
-import android.content.Context;
-
-import com.codepath.instagram.helpers.Utils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,11 +84,4 @@ public class InstagramPost implements Serializable {
         }
         return posts;
     }
-
-    public static List<InstagramPost> fetchPosts(Context context) throws IOException, JSONException {
-        JSONObject popularJSON = Utils.loadJsonFromAsset(context, "popular.json");
-
-        return Utils.decodePostsFromJsonResponse(popularJSON);
-    }
-
 }

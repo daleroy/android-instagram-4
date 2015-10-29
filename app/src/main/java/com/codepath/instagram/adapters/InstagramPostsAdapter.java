@@ -10,10 +10,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
 import com.codepath.instagram.helpers.DeviceDimensionsHelper;
+import com.codepath.instagram.models.InstagramComment;
 import com.codepath.instagram.models.InstagramPost;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -52,6 +54,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         String formatedDate = (String) DateUtils.getRelativeTimeSpanString(post.createdTime *1000);
         SpannableStringBuilder caption = getFormattedCaption(post.user.userName, post.caption);
         String likesCount = getFormattedLikesCount(post.likesCount);
+        String commentsCount = getCommentsCountString(post.commentsCount);
+        List<InstagramComment> comments = null;
 
         holder.tvUserName.setText(post.user.userName);
         holder.sdvUserProfileImage.setImageURI(profileImageUri);
@@ -61,6 +65,26 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         holder.sdvPostImage.setMinimumHeight(displayWidth);
         holder.tvLikeCount.setText(likesCount);
         holder.tvCaption.setText(caption);
+
+        holder.llComments.removeAllViews();
+        View itemCommentView = LayoutInflater.from(context).inflate(R.layout.layout_item_text_comment, holder.llComments, false);
+        TextView tvComment = (TextView) itemCommentView.findViewById(R.id.tvComment);
+        tvComment.setText(commentsCount);
+        holder.llComments.addView(itemCommentView);
+
+        if (post.comments.size() >= 2) {
+            comments = post.comments.subList(0, 2);
+        } else if (post.comments.size() == 1) {
+            comments = post.comments.subList(0,1);
+        }
+
+        if (comments != null) for (InstagramComment comment : comments) {
+            itemCommentView = LayoutInflater.from(context).inflate(R.layout.layout_item_text_comment, holder.llComments, false);
+            tvComment = (TextView) itemCommentView.findViewById(R.id.tvComment);
+            SpannableStringBuilder formattedComment = getFormattedCaption(comment.user.userName, comment.text);
+            tvComment.setText(formattedComment);
+            holder.llComments.addView(itemCommentView);
+        }
 
     }
 
@@ -74,6 +98,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         public TextView tvPostDate;
         public TextView tvLikeCount;
         public TextView tvCaption;
+        public LinearLayout llComments;
 
         public InstagramPostViewHolder(View layoutView) {
             super(layoutView);
@@ -83,6 +108,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
             tvPostDate = (TextView) layoutView.findViewById(R.id.tvPostDate);
             tvLikeCount = (TextView) layoutView.findViewById(R.id.tvLikeCount);
             tvCaption = (TextView) layoutView.findViewById(R.id.tvCaption);
+            llComments = (LinearLayout) layoutView.findViewById(R.id.llComents);
         }
     }
 
@@ -124,4 +150,15 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     public static String getFormattedLikesCount(int count) {
         return NumberFormat.getNumberInstance(Locale.US).format(count) + " likes";
     }
+
+    public static String getCommentsCountString(int commentsCount) {
+        return "View all " + String.valueOf(commentsCount) + " comments";
+    }
+
+    // This method is used to update data for adapter and notify adapter that data has changed
+    public void updateList(List<InstagramPost> data) {
+        postList = data;
+        notifyDataSetChanged();
+    }
+
 }

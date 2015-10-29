@@ -10,18 +10,24 @@ import android.view.MenuItem;
 import com.codepath.instagram.R;
 import com.codepath.instagram.adapters.InstagramPostsAdapter;
 import com.codepath.instagram.helpers.SimpleVerticalSpacerItemDecoration;
+import com.codepath.instagram.helpers.Utils;
 import com.codepath.instagram.models.InstagramPost;
+import com.codepath.instagram.networking.InstagramClient;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
+    private InstagramPostsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,19 +35,15 @@ public class HomeActivity extends AppCompatActivity {
         Fresco.initialize(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        try {
-            postList = InstagramPost.fetchPosts(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        fetchPosts();
+
         SimpleVerticalSpacerItemDecoration svsid = new SimpleVerticalSpacerItemDecoration(52);
         // Get RecyclerView Reference
         RecyclerView rvPosts = (RecyclerView) findViewById(R.id.rvPosts);
-        //rvPosts.addItemDecoration(svsid);
+        rvPosts.addItemDecoration(svsid);
         // Create Adapter
-        InstagramPostsAdapter adapter = new InstagramPostsAdapter(postList);
+        adapter = new InstagramPostsAdapter(postList);
 
         // Set Adapter
         rvPosts.setAdapter(adapter);
@@ -71,4 +73,22 @@ public class HomeActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void fetchPosts() {
+        InstagramClient instagramClient = new InstagramClient();
+        instagramClient.getPopularFeed(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                if (response != null) {
+                    List<InstagramPost> postList = Utils.decodePostsFromJsonResponse(response);
+                    adapter.updateList(postList);
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
+    }
 }
+

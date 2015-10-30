@@ -23,5 +23,10 @@ public class InstagramClient {
         client.get(url, responseHandler);
     }
 
+    public void getFullCommentSet(String mediaId, JsonHttpResponseHandler responseHandler) {
+        String url = getApiUrl("media/" + mediaId + "/comments?client_id=" +CLIENT_ID);
+        client.get(url, responseHandler);
+    }
+
 
 }

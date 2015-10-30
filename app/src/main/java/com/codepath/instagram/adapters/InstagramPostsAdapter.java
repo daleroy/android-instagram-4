@@ -1,6 +1,7 @@
 package com.codepath.instagram.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
+import com.codepath.instagram.activities.CommentsActivity;
 import com.codepath.instagram.helpers.DeviceDimensionsHelper;
 import com.codepath.instagram.models.InstagramComment;
 import com.codepath.instagram.models.InstagramPost;
@@ -29,7 +31,6 @@ import java.util.Locale;
 public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAdapter.InstagramPostViewHolder> {
     private List<InstagramPost> postList;
     private Context context;
-
     public InstagramPostsAdapter(List<InstagramPost> postList) { this.postList = postList; }
 
 
@@ -73,6 +74,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         if (post.comments.size() >= 2) {
             comments = post.comments.subList(0, 2);
             tvComment.setText(commentsCount);
+            tvComment.setOnClickListener(new myClickListener(post.mediaId, context));
             holder.llComments.addView(itemCommentView);
         } else if (post.comments.size() == 1) {
             comments = post.comments.subList(0,1);
@@ -86,10 +88,31 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
             holder.llComments.addView(itemCommentView);
         }
 
+
     }
+
 
     @Override
     public int getItemCount() { return postList.size(); }
+
+    public class myClickListener implements View.OnClickListener {
+        String mediaId;
+        Context context;
+
+        myClickListener(String mediaId, Context context) {
+            this.mediaId = mediaId;
+            this.context = context;
+        }
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(this.context, CommentsActivity.class);
+            intent.putExtra("mediaId", mediaId);
+
+            this.context.startActivity(intent);
+
+            //Toast.makeText(context, "mediaId" + this.mediaId, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public static class InstagramPostViewHolder extends RecyclerView.ViewHolder {
         public SimpleDraweeView sdvUserProfileImage;
@@ -99,9 +122,10 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         public TextView tvLikeCount;
         public TextView tvCaption;
         public LinearLayout llComments;
-
+        public View view;
         public InstagramPostViewHolder(View layoutView) {
             super(layoutView);
+            this.view = view;
             sdvUserProfileImage = (SimpleDraweeView) layoutView.findViewById(R.id.sdvUserProfileImage);
             sdvPostImage = (SimpleDraweeView) layoutView.findViewById(R.id.sdvPostImage);
             tvUserName = (TextView) layoutView.findViewById(R.id.tvUserName);

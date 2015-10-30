@@ -3,10 +3,7 @@ package com.codepath.instagram.adapters;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.format.DateUtils;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +14,8 @@ import com.codepath.instagram.models.InstagramComment;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by dleroy on 10/26/15.
@@ -42,12 +41,14 @@ public class InstagramCommentsAdapter extends RecyclerView.Adapter<InstagramComm
     @Override
     public void onBindViewHolder(InstagramCommentsAdapter.InstagramCommentViewHolder holder, int position) {
         InstagramComment comment = commentList.get(position);
-
+        Pattern p = Pattern.compile("(\\d*\\s\\w)");
         Uri profileImageUri = Uri.parse(comment.user.profilePictureUrl);
         String formatedDate = (String) DateUtils.getRelativeTimeSpanString(comment.createdTime *1000);
+        Matcher m = p.matcher(formatedDate);
+        m.find();
 
         holder.sdvUserProfileImage.setImageURI(profileImageUri);
-        holder.tvPostDate.setText(formatedDate);
+        holder.tvPostDate.setText(m.group(0));
         holder.tvComment.setText(comment.text);
         holder.tvUserName.setText(comment.user.userName);
     }
@@ -70,40 +71,6 @@ public class InstagramCommentsAdapter extends RecyclerView.Adapter<InstagramComm
         }
     }
 
-    private SpannableStringBuilder getFormattedCaption(String userName, String caption) {
-        ForegroundColorSpan fgcsBlue = new ForegroundColorSpan(
-                this.context.getResources().getColor(R.color.blue_text)
-        );
-
-        SpannableStringBuilder ssb = new SpannableStringBuilder(userName);
-
-        ssb.setSpan(
-                fgcsBlue,
-                0,
-                ssb.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        );
-
-        if (caption != null) {
-
-
-            ssb.append(" ");
-
-            ForegroundColorSpan fgcsGray = new ForegroundColorSpan(
-                    this.context.getResources().getColor(R.color.gray_text)
-            );
-
-            ssb.append(caption);
-            ssb.setSpan(
-                    fgcsGray,
-                    ssb.length() - caption.length(),
-                    ssb.length(),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-        }
-
-        return ssb;
-    }
     // This method is used to update data for adapter and notify adapter that data has changed
     public void updateList(List<InstagramComment> data) {
         commentList = data;

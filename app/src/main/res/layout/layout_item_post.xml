@@ -61,28 +61,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tvLikeCount"
-        android:layout_below="@+id/sdvPostImage"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:drawableLeft="@drawable/ic_small_heart_filled"
         android:fontFamily="san-serif-medium"
         android:textColor="@color/blue_text"
         android:textSize="14sp"
         android:enabled="true"
         android:drawablePadding="5dp"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/tvLineSeparator"
+        android:layout_alignLeft="@+id/tvLineSeparator"
+        android:layout_alignStart="@+id/tvLineSeparator" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="14dp"
-        android:layout_marginRight="14dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tvCaption"
@@ -91,16 +86,64 @@
         android:singleLine="false"
         android:lineSpacingMultiplier="1.2"
         android:layout_below="@+id/tvLikeCount"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="24dp" />
+        android:layout_alignLeft="@+id/tvHeart"
+        android:layout_alignStart="@+id/tvHeart" />
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/llComents"
         android:layout_below="@+id/tvCaption"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/llComents"></LinearLayout>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"></LinearLayout>
+
+    <TextView
+        android:layout_width="8dp"
+        android:layout_height="22dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tv_more_dots"
+        android:drawableLeft="@drawable/ic_more_dots"
+        android:layout_below="@+id/sdvPostImage"
+        android:layout_alignRight="@+id/llComents"
+        android:layout_alignEnd="@+id/llComents"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvHeart"
+        android:drawableLeft="@drawable/ic_heart"
+        android:layout_alignBottom="@+id/tv_more_dots"
+        android:layout_alignLeft="@+id/sdvUserProfileImage"
+        android:layout_alignStart="@+id/sdvUserProfileImage" />
+
+    <TextView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/tvComment"
+        android:drawableLeft="@drawable/ic_comment"
+        android:layout_alignBottom="@+id/tv_more_dots"
+        android:layout_toRightOf="@+id/tvHeart"
+        android:layout_toEndOf="@+id/tvHeart"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:id="@+id/tvLineSeparator"
+        android:layout_alignLeft="@+id/tvHeart"
+        android:layout_alignStart="@+id/tvHeart"
+        android:background="@color/light_gray_separator_line"
+        android:layout_toStartOf="@+id/tv_more_dots"
+        android:layout_below="@+id/tv_more_dots"
+        android:layout_alignRight="@+id/tv_more_dots"
+        android:layout_alignEnd="@+id/tv_more_dots"
+        android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

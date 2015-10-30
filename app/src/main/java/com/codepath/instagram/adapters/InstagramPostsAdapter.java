@@ -56,6 +56,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         String likesCount = getFormattedLikesCount(post.likesCount);
         String commentsCount = getCommentsCountString(post.commentsCount);
         List<InstagramComment> comments = null;
+        View itemCommentView = LayoutInflater.from(context).inflate(R.layout.layout_item_text_comment, holder.llComments, false);
+        TextView tvComment = (TextView) itemCommentView.findViewById(R.id.tvComment);
 
         holder.tvUserName.setText(post.user.userName);
         holder.sdvUserProfileImage.setImageURI(profileImageUri);
@@ -67,13 +69,11 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         holder.tvCaption.setText(caption);
 
         holder.llComments.removeAllViews();
-        View itemCommentView = LayoutInflater.from(context).inflate(R.layout.layout_item_text_comment, holder.llComments, false);
-        TextView tvComment = (TextView) itemCommentView.findViewById(R.id.tvComment);
-        tvComment.setText(commentsCount);
-        holder.llComments.addView(itemCommentView);
 
         if (post.comments.size() >= 2) {
             comments = post.comments.subList(0, 2);
+            tvComment.setText(commentsCount);
+            holder.llComments.addView(itemCommentView);
         } else if (post.comments.size() == 1) {
             comments = post.comments.subList(0,1);
         }

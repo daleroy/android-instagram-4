@@ -1,17 +1,12 @@
 package com.codepath.instagram.adapters;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.format.DateUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,21 +14,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.codepath.instagram.R;
-import com.codepath.instagram.activities.CommentsActivity;
 import com.codepath.instagram.helpers.DeviceDimensionsHelper;
+import com.codepath.instagram.helpers.myCommentsClickListener;
+import com.codepath.instagram.helpers.myShareClickListener;
 import com.codepath.instagram.models.InstagramComment;
 import com.codepath.instagram.models.InstagramPost;
-import com.facebook.common.executors.CallerThreadExecutor;
-import com.facebook.common.references.CloseableReference;
-import com.facebook.datasource.DataSource;
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.common.Priority;
-import com.facebook.imagepipeline.core.ImagePipeline;
-import com.facebook.imagepipeline.datasource.BaseBitmapDataSubscriber;
-import com.facebook.imagepipeline.image.CloseableImage;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -89,7 +75,7 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
         if (post.comments.size() >= 2) {
             comments = post.comments.subList(0, 2);
             tvComment.setText(commentsCount);
-            tvComment.setOnClickListener(new myClickListener(post.mediaId, context));
+            tvComment.setOnClickListener(new myCommentsClickListener(post.mediaId, context));
             holder.llComments.addView(itemCommentView);
         } else if (post.comments.size() == 1) {
             comments = post.comments.subList(0,1);
@@ -106,100 +92,8 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
 
     }
 
-
     @Override
     public int getItemCount() { return postList.size(); }
-
-    public class myClickListener implements View.OnClickListener {
-        String mediaId;
-        Context context;
-
-        myClickListener(String mediaId, Context context) {
-            this.mediaId = mediaId;
-            this.context = context;
-        }
-        @Override
-        public void onClick(View view) {
-            Intent intent = new Intent(this.context, CommentsActivity.class);
-            intent.putExtra("mediaId", mediaId);
-
-            this.context.startActivity(intent);
-
-            //Toast.makeText(context, "mediaId" + this.mediaId, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    public class myShareClickListener implements View.OnClickListener {
-        Uri uri;
-        Context mContext;
-
-        myShareClickListener(Uri uri, Context context) {
-            this.uri =uri;
-            this.mContext = context;
-        }
-        @Override
-        public void onClick(View view) {
-            getBitmapFromUri(uri);
-
-            //Toast.makeText(context, "mediaId" + this.mediaId, Toast.LENGTH_SHORT).show();
-        }
-        private void getBitmapFromUri(Uri uri) {
-
-            ImagePipeline imagePipeline = Fresco.getImagePipeline();
-
-            ImageRequest imageRequest = ImageRequestBuilder
-                    .newBuilderWithSource(uri)
-                    .setRequestPriority(Priority.HIGH)
-                    .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.FULL_FETCH)
-                    .build();
-
-            DataSource<CloseableReference<CloseableImage>> dataSource =
-                    imagePipeline.fetchDecodedImage(imageRequest, mContext);
-
-            try {
-                dataSource.subscribe(new BaseBitmapDataSubscriber() {
-
-                    @Override
-                    public void onNewResultImpl(@Nullable Bitmap bitmap) {
-                        if (bitmap == null) {
-                            Log.d("BookDetailActivity", "Bitmap data source returned success, but bitmap null.");
-                            return;
-                        }
-                        // The bitmap provided to this method is only guaranteed to be around
-                        // for the lifespan of this method. The image pipeline frees the
-                        // bitmap's memory after this method has completed.
-                        //
-                        // This is fine when passing the bitmap to a system process as
-                        // Android automatically creates a copy.
-                        //
-                        // If you need to keep the bitmap around, look into using a
-                        // BaseDataSubscriber instead of a BaseBitmapDataSubscriber.
-                        shareBitmap(bitmap);
-                    }
-
-                    @Override
-                    public void onFailureImpl(DataSource dataSource) {
-                        // No cleanup required here
-                    }
-                }, CallerThreadExecutor.getInstance());
-            } finally {
-                if (dataSource != null) {
-                    dataSource.close();
-                }
-            }
-        }
-
-        public void shareBitmap(Bitmap bitmap) {
-            String path = MediaStore.Images.Media.insertImage(this.mContext.getContentResolver(),
-                    bitmap, "Image Description", null);
-            Uri bmpUri = Uri.parse(path);
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-            shareIntent.setType("image/*");
-
-            mContext.startActivity(Intent.createChooser(shareIntent, "Share Image"));
-        }
-    }
 
     public static class InstagramPostViewHolder extends RecyclerView.ViewHolder {
         public SimpleDraweeView sdvUserProfileImage;

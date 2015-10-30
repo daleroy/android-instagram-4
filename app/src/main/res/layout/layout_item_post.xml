@@ -101,7 +101,7 @@
         android:layout_alignParentEnd="true"></LinearLayout>
 
     <TextView
-        android:layout_width="8dp"
+        android:layout_width="30dp"
         android:layout_height="22dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/tv_more_dots"
@@ -110,7 +110,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:layout_alignRight="@+id/tvPostDate"
-        android:layout_alignEnd="@+id/tvPostDate" />
+        android:layout_alignEnd="@+id/tvPostDate"
+        android:layout_marginRight="-22dp" />
 
     <TextView
         android:layout_width="22dp"

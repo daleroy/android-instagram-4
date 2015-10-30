@@ -1,5 +1,6 @@
 package com.codepath.instagram.activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,9 +29,11 @@ import cz.msebera.android.httpclient.Header;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
     private InstagramPostsAdapter adapter;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.mContext = this;
         List<InstagramPost> postList = new ArrayList<InstagramPost>();
         Fresco.initialize(this);
         super.onCreate(savedInstanceState);
@@ -84,6 +87,7 @@ public class HomeActivity extends AppCompatActivity {
                     adapter.updateList(postList);
                 }
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);

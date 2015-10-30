@@ -107,10 +107,10 @@
         android:id="@+id/tv_more_dots"
         android:drawableLeft="@drawable/ic_more_dots"
         android:layout_below="@+id/sdvPostImage"
-        android:layout_alignRight="@+id/llComents"
-        android:layout_alignEnd="@+id/llComents"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:layout_alignRight="@+id/tvPostDate"
+        android:layout_alignEnd="@+id/tvPostDate" />
 
     <TextView
         android:layout_width="22dp"

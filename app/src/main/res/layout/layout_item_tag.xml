@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:paddingLeft="28dp"
+    android:layout_height="64dp">
+
+    <TextView
+        android:id="@+id/tvSearchTagName"
+        android:fontFamily="san-serif-medium"
+        android:textSize="14sp"
+        android:textColor="@color/gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvSearchTagPosts"
+        android:fontFamily="san-serif"
+        android:textSize="14sp"
+        android:textColor="@color/light_gray_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

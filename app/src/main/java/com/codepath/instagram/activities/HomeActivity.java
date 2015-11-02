@@ -1,36 +1,35 @@
 package com.codepath.instagram.activities;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.widget.Toolbar;
 
 import com.codepath.instagram.R;
-import com.codepath.instagram.adapters.InstagramPostsAdapter;
-import com.codepath.instagram.helpers.SimpleVerticalSpacerItemDecoration;
-import com.codepath.instagram.helpers.Utils;
-import com.codepath.instagram.models.InstagramPost;
-import com.codepath.instagram.networking.InstagramClient;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import cz.msebera.android.httpclient.Header;
-
+import com.codepath.instagram.adapters.HomeFragmentAdapter;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
-    private InstagramPostsAdapter adapter;
-    private Context mContext;
+//    private InstagramPostsAdapter adapter;
+//    private Context mContext;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ViewPager vpPager = (ViewPager) findViewById(R.id.vpPager);
+        HomeFragmentAdapter adapterViewPager = new HomeFragmentAdapter(getSupportFragmentManager(), this);
+        vpPager.setAdapter(adapterViewPager);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tlTabLayout);
+        tabLayout.setupWithViewPager(vpPager);
+    }
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.mContext = this;
@@ -78,8 +77,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void fetchPosts() {
-        InstagramClient instagramClient = new InstagramClient();
-        instagramClient.getPopularFeed(new JsonHttpResponseHandler() {
+        InstagramClient instagramClient = new InstagramClient(mContext);
+        instagramClient.getOwnFeed(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 if (response != null) {
@@ -94,5 +93,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    */
 }
 

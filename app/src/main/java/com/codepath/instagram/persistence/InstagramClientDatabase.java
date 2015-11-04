@@ -148,17 +148,75 @@ public class InstagramClientDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO: Implement this method
+        if (oldVersion != newVersion) {
+            db.beginTransaction();
+            try {
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_POST_COMMENTS);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_POSTS);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_COMMENTS);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_IMAGES);
+                db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
+
+                onCreate(db);
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
     }
 
     public void emptyAllTables() {
-        // TODO: Implement this method to delete all rows from all tables
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_POST_COMMENTS, null, null);
+            db.delete(TABLE_POSTS, null, null);
+            db.delete(TABLE_COMMENTS, null, null);
+            db.delete(TABLE_IMAGES, null, null);
+            db.delete(TABLE_USERS, null, null);
+            db.setTransactionSuccessful();
+        }
+        catch (Exception e) {
+            Log.d(TAG, "Error while trying to delete all posts and users");
+        } finally {
+            db.endTransaction();
+        }
     }
 
     public void addInstagramPosts(List<InstagramPost> posts) {
-        // TODO: Implement this method
-        // Take a look at the helper methods addImage, addComment, etc as you implement this method
-        // It's also a good idea to do this work in a transaction
+        // Create and/or open the database for writing
+        SQLiteDatabase db = getWritableDatabase();
+
+        for (InstagramPost post : posts) {
+            // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
+            // consistency of the database.
+            db.beginTransaction();
+            try {
+                // The user might already exist in the database (i.e. the same user created multiple posts).
+                long userId = addorUpdateUser(post.user);
+                long imageId = addImage(post.image);
+
+                ContentValues values = new ContentValues();
+                values.put(KEY_POST_MEDIA_ID, post.mediaId);
+                values.put(KEY_POST_USER_ID_FK, userId);
+                values.put(KEY_POST_IMAGE_ID_FK, imageId);
+                values.put(KEY_POST_CAPTION, post.caption);
+                values.put(KEY_POST_LIKES_COUNT, post.likesCount);
+                values.put(KEY_POST_COMMENTS_COUNT, post.commentsCount);
+                values.put(KEY_POST_CREATED_TIME, post.createdTime);
+
+                // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
+                long postId = db.insertOrThrow(TABLE_POSTS, null, values);
+                for (InstagramComment comment: post.comments) {
+                    addComment(comment, postId);
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                Log.d(TAG, "Error while trying to add post to database");
+            } finally {
+                db.endTransaction();
+            }
+        }
     }
 
     // Poor man's "upsert".

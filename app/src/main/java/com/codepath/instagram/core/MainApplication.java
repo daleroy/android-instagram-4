@@ -1,6 +1,7 @@
 package com.codepath.instagram.core;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.codepath.instagram.networking.InstagramClient;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -17,10 +18,14 @@ public class MainApplication extends Application {
     @Override
     public void onCreate() {
         instance = this;
+
         super.onCreate();
         Fresco.initialize(this);
     }
 
+    public static Context getContext() {
+        return (Context) instance;
+    }
     public static InstagramClient getRestClient() {
         return (InstagramClient) InstagramClient.getInstance(InstagramClient.class, sharedApplication());
     }

@@ -33,6 +33,17 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
     private Context context;
     public InstagramPostsAdapter(List<InstagramPost> postList) { this.postList = postList; }
 
+    // Clean all elements of the recycler
+    public void clear() {
+        postList.clear();
+        notifyDataSetChanged();
+    }
+
+    // Add a list of items
+    public void addAll(List<InstagramPost> list) {
+        postList.addAll(list);
+        notifyDataSetChanged();
+    }
 
     @Override
     public InstagramPostsAdapter.InstagramPostViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -72,12 +83,12 @@ public class InstagramPostsAdapter extends RecyclerView.Adapter<InstagramPostsAd
 
         holder.llComments.removeAllViews();
 
-        if (post.comments.size() >= 2) {
+        if (post.comments != null && post.comments.size() >= 2) {
             comments = post.comments.subList(0, 2);
             tvComment.setText(commentsCount);
             tvComment.setOnClickListener(new myCommentsClickListener(post.mediaId, context));
             holder.llComments.addView(itemCommentView);
-        } else if (post.comments.size() == 1) {
+        } else if (post.comments != null && post.comments.size() == 1) {
             comments = post.comments.subList(0,1);
         }
 

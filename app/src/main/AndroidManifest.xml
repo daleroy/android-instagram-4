@@ -14,6 +14,9 @@
         android:name=".core.MainApplication"
         android:theme="@style/AppTheme" >
 
+        <service android:name=".networking.InstagramService"
+                 android:exported="false"/>
+
         <activity android:name=".activities.LoginActivity"
             android:label="Instagram">
             <intent-filter>

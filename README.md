@@ -2,17 +2,15 @@
 
 This is an Android Instagram Client
 
-Time spent: 12 hours spent in total
+Time spent: 5 hours spent in total
 
 Completed user stories:
-* [x] User can login to Instagram using OAuth login.
-* [x] User can view their own feed.
-* [x] User can search for a user by username.
-* [x] User can search for a tag.
-* [x] On the search screen, there will now be 2 tabs corresponding to "USERS" and "TAGS".
-* [x] When performing a search, the user can switch between the "USERS" tab and the "TAGS" tab and see search results for each one.
+* [x] Add pull-to-refresh for the home feed with SwipeRefreshLayout.
+* [x] User can open the Instagram client offline and see last loaded feed.
+* [x] Each media item is persisted into SQlite and can be displayed from the local DB.
+* [x] Create a background service to make the network request, load items into the DB and populate the view (for the user's home feed).
 
-![Video Walkthrough](instagram_3.gif)
+![Video Walkthrough](instagram_4.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
